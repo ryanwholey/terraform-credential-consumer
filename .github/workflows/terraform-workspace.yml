@@ -20,7 +20,15 @@ jobs:
   workspace:
     runs-on: ubuntu-latest
     steps:
-      - id: workpsace-outputs
+      - uses: DamianReeves/write-file-action
+        with:
+          path: ${{ github.workspace }}/terraform-workspace-manager-backend.hcl
+          contents: |
+            organization = "ryanwholey"
+            host = "app.terraform.io"
+            workspaces { name = "terraform-workspace-manager"}
+          write-mode: append
+      - id: workspace-outputs
         uses: dflook/terraform-remote-state@v1
         env:
           TERRAFORM_CLOUD_TOKENS: |
@@ -28,7 +36,4 @@ jobs:
         with: 
           backend_type: remote
           workspace: terraform-workspace-manager
-          backend_config: |
-            organization = "ryanwholey"
-            host = "app.terraform.io"
-            workspaces { name = "terraform-workspace-manager"}
+          backend_config: ${{ github.workspace }}/terraform-workspace-manager-backend.hcl
