@@ -1,0 +1,30 @@
+name: Terraform Cloud Workspace
+on:
+  pull_request:
+    paths:
+      - .github/workflows/terraform-workspace.yml
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/terraform-workspace.yml
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: Whether to apply changes to the Terraform workspace. If false, the workflow will print any planned changes but will not apply them.
+        required: true
+        default: 'false'
+permissions:
+  checks: write
+jobs:
+  workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - id: workpsace-outputs
+        uses: dflook/terraform-github-actions@1.22.1
+        env:
+          TERRAFORM_CLOUD_TOKENS: |
+            app.terraform.io=${{ secrets.TF_TOKEN }}
+        with: 
+          backend_type: remote
+          workspace: terraform-workspace-manager
