@@ -28,4 +28,4 @@ jobs:
           address: https://app.terraform.io
           token: ${{ secrets.TF_TOKEN }}
       - run: |
-          echo "${{fromJson(steps.manager.outputs.output).storage_bucket}}"
+          echo "${{fromJson(steps.manager.outputs.output).storage_bucket.value}}"
