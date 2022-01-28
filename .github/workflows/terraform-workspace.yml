@@ -20,7 +20,7 @@ jobs:
   workspace:
     runs-on: ubuntu-latest
     steps:
-      - uses: DamianReeves/write-file-action
+      - uses: DamianReeves/write-file-action@v1.0
         with:
           path: ${{ github.workspace }}/terraform-workspace-manager-backend.hcl
           contents: |
