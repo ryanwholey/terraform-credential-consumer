@@ -25,7 +25,7 @@ jobs:
           path: ${{ github.workspace }}/terraform-workspace-manager-backend.hcl
           contents: |
             organization = "ryanwholey"
-            host = "app.terraform.io"
+            hostname = "app.terraform.io"
             workspaces { name = "terraform-workspace-manager"}
           write-mode: append
       - id: workspace-outputs
