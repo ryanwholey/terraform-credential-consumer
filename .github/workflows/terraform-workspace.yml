@@ -28,3 +28,6 @@ jobs:
         with: 
           backend_type: remote
           workspace: terraform-workspace-manager
+          backend_config: |
+            organization=ryanwholey
+
