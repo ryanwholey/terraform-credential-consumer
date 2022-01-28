@@ -20,20 +20,9 @@ jobs:
   workspace:
     runs-on: ubuntu-latest
     steps:
-      - uses: DamianReeves/write-file-action@v1.0
+      - uses: ryanwholey/terraform-cloud-remote-state-action@main
         with:
-          path: ${{ github.workspace }}/terraform-workspace-manager-backend.hcl
-          contents: |
-            organization = "ryanwholey"
-            hostname = "app.terraform.io"
-            workspaces { name = "terraform-workspace-manager"}
-          write-mode: append
-      - id: workspace-outputs
-        uses: dflook/terraform-remote-state@v1
-        env:
-          TERRAFORM_CLOUD_TOKENS: |
-            app.terraform.io=${{ secrets.TF_TOKEN }}
-        with: 
-          backend_type: remote
           workspace: terraform-workspace-manager
-          backend_config: ${{ github.workspace }}/terraform-workspace-manager-backend.hcl
+          organization: ryanwholey
+          hostname: app.terraform.io
+          token: ${{ secrets.TF_TOKEN }}
