@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: workpsace-outputs
-        uses: dflook/terraform-github-actions@1.22.1
+        uses: dflook/terraform-github-actions
         env:
           TERRAFORM_CLOUD_TOKENS: |
             app.terraform.io=${{ secrets.TF_TOKEN }}
