@@ -29,6 +29,6 @@ jobs:
           backend_type: remote
           workspace: terraform-workspace-manager
           backend_config: |
-            organization=ryanwholey
-            hostname=app.terraform.io
-            name=terraform-workspace-manager
+            organization = "ryanwholey"
+            host = "app.terraform.io"
+            workspaces { name = "terraform-workspace-manager"}
