@@ -27,5 +27,28 @@ jobs:
           organization: ryanwholey
           address: https://app.terraform.io
           token: ${{ secrets.TF_TOKEN }}
+      - uses: TakeScoop/terraform-cloud-workspace-action@v2
+        name: Manage Terraform Workspaces
+        id: terraform
+        with:
+          working_directory: ''
+          variables: |-
+            - key: storage_bucket
+              value: "${{fromJson(steps.manager.outputs.output).storage_bucket.value}}"
+              category: env
+          terraform_version: '1.1.3'
+          terraform_token: "${{ secrets.TF_TOKEN }}"
+          terraform_organization: ryanwholey
+          terraform_host: app.terraform.io
+          apply: "${{ github.event.inputs.apply == 'true' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}"
+          vcs_type: github
+          global_remote_state: true
+      - if: ${{steps.terraform.outputs.plan != '' }}
+        name: GitHub Check
+        uses: TakeScoop/terraform-github-check-action@v1
+        with:
+          name: ${{ github.workflow }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          plan: "${{ steps.terraform.outputs.plan }}"
       - run: |
           echo "${{fromJson(steps.manager.outputs.output).storage_bucket.value}}"
