@@ -21,8 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: ryanwholey/terraform-cloud-remote-state-action@main
+        id: manager
         with:
           workspace: terraform-workspace-manager
           organization: ryanwholey
           address: https://app.terraform.io
           token: ${{ secrets.TF_TOKEN }}
+      - run: |
+          echo "${{fromJson(steps.manager.outputs.output).storage_bucket}}"
