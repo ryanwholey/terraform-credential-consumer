@@ -30,4 +30,5 @@ jobs:
           workspace: terraform-workspace-manager
           backend_config: |
             organization=ryanwholey
-
+            hostname=app.terraform.io
+            name=terraform-workspace-manager
