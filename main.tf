@@ -1,9 +1,8 @@
 data "okta_everyone_group" "everyone" {}
 
 output "everyone" {
-  value = data.okta_everyone_group.everyone
+  value = data.okta_everyone_group.everyone.id
 }
-
 
 terraform {
   required_version = ">= 1, < 2"
