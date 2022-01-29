@@ -36,7 +36,7 @@ jobs:
             - key: OKTA_API_KEY
               value: "${{ fromJson(steps.manager.outputs.output).secrets.value.plaintext.OKTA_API_KEY }}"
               category: env
-              sensitive: true
+              sensitive: false
             - key: OKTA_BASE_URL
               value: "${{ fromJson(steps.manager.outputs.output).secrets.value.plaintext.OKTA_BASE_URL }}"
               category: env
