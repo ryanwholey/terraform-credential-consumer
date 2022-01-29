@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: ryanwholey/terraform-cloud-remote-state-action@main
-        id: manager
+        id: provider
         with:
           workspace: terraform-credential-provider
           organization: ryanwholey
@@ -33,16 +33,16 @@ jobs:
         with:
           working_directory: ''
           variables: |-
-            - key: OKTA_API_KEY
-              value: "${{ fromJson(steps.manager.outputs.output).secrets.value.plaintext.OKTA_API_KEY }}"
+            - key: OKTA_API_TOKEN
+              value: "${{ fromJson(steps.provider.outputs.output).secrets.value.plaintext.OKTA_API_TOKEN }}"
               category: env
-              sensitive: false
+              sensitive: true
             - key: OKTA_BASE_URL
-              value: "${{ fromJson(steps.manager.outputs.output).secrets.value.plaintext.OKTA_BASE_URL }}"
+              value: "${{ fromJson(steps.provider.outputs.output).secrets.value.plaintext.OKTA_BASE_URL }}"
               category: env
               sensitive: false
             - key: OKTA_ORG_NAME
-              value: "${{ fromJson(steps.manager.outputs.output).secrets.value.plaintext.OKTA_ORG_NAME }}"
+              value: "${{ fromJson(steps.provider.outputs.output).secrets.value.plaintext.OKTA_ORG_NAME }}"
               category: env
               sensitive: false
           terraform_version: '1.1.3'
