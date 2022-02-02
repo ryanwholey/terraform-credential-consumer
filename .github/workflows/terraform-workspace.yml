@@ -27,24 +27,17 @@ jobs:
           organization: ryanwholey
           address: https://app.terraform.io
           token: ${{ secrets.TF_TOKEN }}
+      - uses: ryanwholey/json-to-yaml-action@main
+        id: yaml
+        with:
+          json: ${{ toJson(fromJson(steps.provider.outputs.output).variables) }}
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
         with:
           working_directory: ''
           variables: |-
-            - key: OKTA_API_TOKEN
-              value: "${{ fromJson(steps.provider.outputs.output).secrets.value.plaintext.OKTA_API_TOKEN }}"
-              category: env
-              sensitive: true
-            - key: OKTA_BASE_URL
-              value: "${{ fromJson(steps.provider.outputs.output).secrets.value.plaintext.OKTA_BASE_URL }}"
-              category: env
-              sensitive: false
-            - key: OKTA_ORG_NAME
-              value: "${{ fromJson(steps.provider.outputs.output).secrets.value.plaintext.OKTA_ORG_NAME }}"
-              category: env
-              sensitive: false
+            ${{ steps.yaml.outputs.yaml }}
           terraform_version: '1.1.3'
           terraform_token: "${{ secrets.TF_TOKEN }}"
           terraform_organization: ryanwholey
