@@ -31,6 +31,9 @@ jobs:
         id: yaml
         with:
           json: ${{ toJson(fromJson(steps.provider.outputs.output).variables.Value) }}
+      - run:  echo $YAML
+        env:
+          YAML: ${{ steps.yaml.outputs.yaml }}
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
