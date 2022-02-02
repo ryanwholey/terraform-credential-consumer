@@ -30,8 +30,7 @@ jobs:
       - uses: ryanwholey/json-to-yaml-action@main
         id: yaml
         with:
-          json: ${{ toJson(fromJson(steps.provider.outputs.output).variables) }}
-
+          json: ${{ toJson(fromJson(steps.provider.outputs.output).variables.Value) }}
       - run: echo "$YAML"
         env:
           YAML: ${{ steps.yaml.outputs.yaml }}
