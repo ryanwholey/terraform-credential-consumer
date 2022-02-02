@@ -20,14 +20,16 @@ jobs:
   workspace:
     runs-on: ubuntu-latest
     steps:
-      - uses: ryanwholey/terraform-cloud-remote-state-action@main
+      - name: Fetch Workspace Variables
+        uses: ryanwholey/terraform-cloud-remote-state-action@main
         id: provider
         with:
           workspace: terraform-credential-provider
           organization: ryanwholey
           address: https://app.terraform.io
           token: ${{ secrets.TF_TOKEN }}
-      - uses: ryanwholey/json-to-yaml-action@main
+      - name: Convert variables to YAML
+        uses: ryanwholey/json-to-yaml-action@main
         id: yaml
         with:
           json: ${{ toJson(fromJson(steps.provider.outputs.output).variables.Value) }}
