@@ -20,19 +20,11 @@ jobs:
   workspace:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch Workspace Variables
-        uses: ryanwholey/terraform-cloud-remote-state-action@main
-        id: provider
-        with:
-          workspace: terraform-credential-provider
-          organization: ryanwholey
-          address: https://app.terraform.io
-          token: ${{ secrets.TF_TOKEN }}
-      - name: Convert variables to YAML
-        uses: ryanwholey/json-to-yaml-action@main
+      - name: Format Terraform Variables
+        uses: ryanwholey/terraform-credential-provider/.github/workflows/format-variables.yml@main
         id: yaml
-        with:
-          json: ${{ toJson(fromJson(steps.provider.outputs.output).variables.Value) }}
+        secrets:
+          TF_TOKEN: ${{ secrets.TF_TOKEN }}
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
