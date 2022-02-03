@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: format-variables
     steps:
+      - run: echo ${{ needs.format-variables.outputs.variables }}
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
         with:
-          working_directory: ''
           variables: |-
             ${{ needs.format-variables.outputs.variables }}
           terraform_version: '1.1.3'
