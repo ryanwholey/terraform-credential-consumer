@@ -1,0 +1,16 @@
+name: Terraform Cloud Workspace
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+jobs:
+  test-mask:
+    runs-on: ubuntu-latest
+    steps:
+      - id: secret
+        run: |
+          secret=$((RANDOM))
+          echo "::add-mask::$secret"
+          echo "::set-output name=number::$secret"
+      - run: |
+          echo "the secret number is ${{ steps.secret.outputs.number }}"
