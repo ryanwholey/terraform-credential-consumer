@@ -9,8 +9,13 @@ jobs:
     steps:
       - id: secret
         run: |
-          secret=$((RANDOM))
-          echo "::add-mask::$secret"
-          echo "::set-output name=number::$secret"
+          echo "::add-mask::$SECRET"
+          echo "::set-output name=number::$SECRET"
+        env:
+          SECRET: |-
+            {
+              "foo": "bar",
+              "baz": "woz"
+            }
       - run: |
           echo "the secret number is ${{ steps.secret.outputs.number }}"
