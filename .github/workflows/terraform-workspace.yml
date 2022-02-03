@@ -30,7 +30,7 @@ jobs:
       - run: echo "$VARS"
         env:
           VARS: ${{ needs.format-variables.outputs.yaml }}
-      - uses: TakeScoop/terraform-cloud-workspace-action@v2
+      - uses: TakeScoop/terraform-cloud-workspace-action@rw-debug-variables
         name: Manage Terraform Workspaces
         id: terraform
         with:
