@@ -27,6 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: format-variables
     steps:
+      - run: echo "$VARS"
+        env:
+          VARS: ${{ needs.format-variables.outputs.yaml }}
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
