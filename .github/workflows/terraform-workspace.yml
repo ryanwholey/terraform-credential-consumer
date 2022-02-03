@@ -17,20 +17,29 @@ on:
 permissions:
   checks: write
 jobs:
-  format-variables:
-    uses: ryanwholey/terraform-credential-provider/.github/workflows/format-variables.yml@main
-    secrets:
-      TF_TOKEN: ${{ secrets.TF_TOKEN }}
+  # format-variables:
+  #   uses: ryanwholey/terraform-credential-provider/.github/workflows/format-variables.yml@main
+  #   secrets:
+  #     TF_TOKEN: ${{ secrets.TF_TOKEN }}
   workspace:
     runs-on: ubuntu-latest
     needs: format-variables
     steps:
+      - name: Fetch Workspace Variables
+        uses: ryanwholey/terraform-cloud-remote-state-action@main
+        id: provider
+        with:
+          workspace: terraform-credential-provider
+          organization: ryanwholey
+          address: https://app.terraform.io
+          token: ${{ secrets.TF_TOKEN }}
+          target: variables
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
         with:
           variables: |-
-            ${{ needs.format-variables.outputs.variables }}
+            ${{ steps.provider.outputs.output }}
           terraform_version: '1.1.3'
           terraform_token: "${{ secrets.TF_TOKEN }}"
           terraform_organization: ryanwholey
