@@ -22,7 +22,6 @@ jobs:
     uses: ryanwholey/terraform-credential-provider/.github/workflows/format-variables.yml@main
     secrets:
       TF_TOKEN: ${{ secrets.TF_TOKEN }}
-
   workspace:
     runs-on: ubuntu-latest
     needs: format-variables
