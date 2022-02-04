@@ -10,6 +10,10 @@ on:
         required: true
         type: boolean
         description: Whether to apply the Terraform workspace plan
+      variables:
+        required: false
+        type: string
+        default: '[]'
     secrets:
       terraform_token:
         required: true
@@ -27,12 +31,19 @@ jobs:
           address: https://app.terraform.io
           token: ${{ secrets.terraform_token }}
           target: variables
+      - name: Merge variables
+        id: variables
+        uses: ryanwholey/merge-json-array-action@main
+        with:
+          first: "${{ steps.provider.outputs.output }}"
+          second: "${{ inputs.variables }}"
+          sensitive: true
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
         with:
           variables: |-
-            ${{ steps.provider.outputs.output }}
+            ${{ steps.variables.outputs.result }}
           terraform_version: ${{ inputs.terraform_version }}
           terraform_token: "${{ secrets.terraform_token }}"
           terraform_organization: ryanwholey
