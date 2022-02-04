@@ -14,6 +14,10 @@ on:
         required: false
         type: string
         default: '[]'
+      add_organization_variables:
+        required: false
+        type: boolean
+        default: true
     secrets:
       terraform_token:
         required: true
@@ -22,7 +26,8 @@ jobs:
   workspace:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch Workspace Variables
+      - if: ${{ inputs.add_organization_variables }}
+        name: Fetch Workspace Variables
         uses: ryanwholey/terraform-cloud-remote-state-action@main
         id: provider
         with:
@@ -31,7 +36,8 @@ jobs:
           address: https://app.terraform.io
           token: ${{ secrets.terraform_token }}
           target: variables
-      - name: Merge variables
+      - if: ${{ inputs.add_organization_variables }}
+        name: Merge variables
         id: variables
         uses: ryanwholey/merge-json-array-action@main
         with:
@@ -43,7 +49,7 @@ jobs:
         id: terraform
         with:
           variables: |-
-            ${{ steps.variables.outputs.result }}
+            ${{ inputs.add_organization_variables && steps.variables.outputs.result || inputs.variables }}
           terraform_version: ${{ inputs.terraform_version }}
           terraform_token: "${{ secrets.terraform_token }}"
           terraform_organization: ryanwholey
