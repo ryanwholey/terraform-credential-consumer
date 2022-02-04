@@ -10,10 +10,7 @@ on:
         required: true
         type: boolean
         description: Whether to apply the Terraform workspace plan
-      variables:
-        required: false
-        type: string
-        default: '[]'
+
       add_organization_variables:
         required: false
         type: boolean
@@ -26,6 +23,8 @@ on:
       terraform_token:
         required: true
         description: A Terraform Cloud token
+      variables:
+        required: false
 jobs:
   workspace:
     runs-on: ubuntu-latest
@@ -40,14 +39,18 @@ jobs:
           address: https://app.terraform.io
           token: ${{ secrets.terraform_token }}
           target: variables
-      - if: ${{ inputs.add_organization_variables }}
-        name: Script Merge Variables
+      - name: Format Variables
         uses: actions/github-script@v5
         id: script-variables
         with:
           script: |-
-            const orgVars = JSON.parse(`${{ steps.provider.outputs.output }}`)
-            const inputVars = JSON.parse(`${{ inputs.variables }}`)
+            let orgVars = []
+
+            if (${{ inputs.add_organization_variables }}) {
+              orgVars = JSON.parse(`${{ steps.provider.outputs.output }}`)
+            }
+
+            const inputVars = JSON.parse(`${{ secrets.variables }}` || '[]')
             
             const merged = JSON.stringify([...orgVars, ...inputVars])
 
