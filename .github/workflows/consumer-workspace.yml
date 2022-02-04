@@ -40,15 +40,16 @@ jobs:
           address: https://app.terraform.io
           token: ${{ secrets.terraform_token }}
           target: variables
+      # - if: ${{ inputs.add_organization_variables }}
+      #   name: Merge variables
+      #   id: variables
+      #   uses: ryanwholey/merge-json-array-action@main
+      #   with:
+      #     first: "${{ steps.provider.outputs.output }}"
+      #     second: "${{ inputs.variables }}"
+      #     sensitive: true
       - if: ${{ inputs.add_organization_variables }}
-        name: Merge variables
-        id: variables
-        uses: ryanwholey/merge-json-array-action@main
-        with:
-          first: "${{ steps.provider.outputs.output }}"
-          second: "${{ inputs.variables }}"
-          sensitive: true
-      - name: Script Merge Variables
+        name: Script Merge Variables
         uses: actions/github-script@v5
         id: script-variables
         with:
@@ -78,7 +79,7 @@ jobs:
         id: terraform
         with:
           variables: |-
-            ${{ inputs.add_organization_variables && steps.variables.outputs.result || inputs.variables }}
+            ${{ inputs.add_organization_variables && steps.script-variables.outputs.result || inputs.variables }}
           terraform_version: ${{ inputs.terraform_version }}
           terraform_token: "${{ secrets.terraform_token }}"
           terraform_organization: ryanwholey
