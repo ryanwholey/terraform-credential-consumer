@@ -2,11 +2,13 @@ name: Terraform Cloud Workspace
 on:
   pull_request:
     paths:
+      - .github/workflows/consumer-workspace.yml
       - .github/workflows/terraform-workspace.yml
   push:
     branches:
       - main
     paths:
+      - .github/workflows/consumer-workspace.yml
       - .github/workflows/terraform-workspace.yml
   workflow_dispatch:
     inputs:
@@ -18,36 +20,9 @@ permissions:
   checks: write
 jobs:
   workspace:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Workspace Variables
-        uses: ryanwholey/terraform-cloud-remote-state-action@main
-        id: provider
-        with:
-          workspace: terraform-credential-provider
-          organization: ryanwholey
-          address: https://app.terraform.io
-          token: ${{ secrets.TF_TOKEN }}
-          target: variables
-      - uses: TakeScoop/terraform-cloud-workspace-action@v2
-        name: Manage Terraform Workspaces
-        id: terraform
-        with:
-          variables: |-
-            ${{ steps.provider.outputs.output }}
-          terraform_version: '1.1.3'
-          terraform_token: "${{ secrets.TF_TOKEN }}"
-          terraform_organization: ryanwholey
-          terraform_host: app.terraform.io
-          apply: "${{ github.event.inputs.apply == 'true' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}"
-          vcs_type: github
-          global_remote_state: true
-          tags: |-
-            - add-provider-config
-      - if: ${{steps.terraform.outputs.plan != '' }}
-        name: GitHub Check
-        uses: TakeScoop/terraform-github-check-action@v1
-        with:
-          name: ${{ github.workflow }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          plan: "${{ steps.terraform.outputs.plan }}"
+    uses: ./consumer-workspace.yml
+    with:
+      terraform_version: '1.1.3'
+      apply: ${{ github.event.inputs.apply == 'true' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+    secrets:
+      terraform_token: ${{ secrets.TF_TOKEN }}
