@@ -1,4 +1,4 @@
-name: Format Terraform Cloud Variables
+name: Organization Specific Consumer Terraform Workspace
 on:
   workflow_call:
     inputs:
@@ -14,12 +14,8 @@ on:
       terraform_token:
         required: true
         description: A Terraform Cloud token
-    outputs:
-      variables:
-        description: The formatted variables as a JSON list
-        value: ${{ jobs.format-variables.outputs.variables }}
 jobs:
-  format-variables:
+  workspace:
     runs-on: ubuntu-latest
     outputs:
       variables: ${{ steps.provider.outputs.output }}
