@@ -58,6 +58,7 @@ jobs:
 
             return merged
           result-encoding: string      
+          debug: true
       - name: Merge Workspace Tags
         uses: actions/github-script@v5
         id: tags
