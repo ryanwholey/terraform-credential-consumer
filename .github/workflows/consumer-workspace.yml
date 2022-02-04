@@ -18,6 +18,10 @@ on:
         required: false
         type: boolean
         default: true
+      tags:
+        required: false
+        type: string
+        default: '[]'
     secrets:
       terraform_token:
         required: true
@@ -36,14 +40,37 @@ jobs:
           address: https://app.terraform.io
           token: ${{ secrets.terraform_token }}
           target: variables
-      - if: ${{ inputs.add_organization_variables }}
-        name: Merge variables
+      # - if: ${{ inputs.add_organization_variables }}
+      #   name: Merge variables
+      #   id: variables
+      #   uses: ryanwholey/merge-json-array-action@main
+      #   with:
+      #     first: "${{ steps.provider.outputs.output }}"
+      #     second: "${{ inputs.variables }}"
+      #     sensitive: true
+      - uses: actions/github-script@v5
         id: variables
-        uses: ryanwholey/merge-json-array-action@main
         with:
-          first: "${{ steps.provider.outputs.output }}"
-          second: "${{ inputs.variables }}"
-          sensitive: true
+          script: |-
+            const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
+            const inputVars = JSON.parse('${{ inputs.variables }}')
+            
+            const merged = JSON.stringify([...orgVars, ...inputVars])
+
+            core.setSecret(merged)
+
+            return merged
+          result-encoding: string      
+      - uses: actions/github-script@v5
+        id: tags
+        with:
+          script: |-
+            if (${{ inputs.add_organization_variables }}) {
+              return JSON.stringify(['add-provider-config', ...JSON.parse('${{ inputs.tags }}')])
+            }
+
+            return ${{ inputs.tags }}
+          result-encoding: string    
       - uses: TakeScoop/terraform-cloud-workspace-action@v2
         name: Manage Terraform Workspaces
         id: terraform
@@ -57,5 +84,5 @@ jobs:
           apply: ${{ inputs.apply }}
           vcs_type: github
           global_remote_state: true
-          tags: |-
-            - add-provider-config
+          tags: ${{ steps.tags.outputs.result }}
+            
