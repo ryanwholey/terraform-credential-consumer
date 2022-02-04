@@ -16,7 +16,7 @@ jobs:
         run: echo '::set-output name=fetched::["foo", "bar"]'
       - id: simulate-input
         run: |-
-          str=["baz","woz"]
+          str='["baz","woz"]'
           echo "::add-mask::$str"
           echo "::set-output name=input::$str"
       - uses: actions/github-script@v5
