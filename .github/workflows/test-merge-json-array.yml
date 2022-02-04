@@ -23,8 +23,8 @@ jobs:
         id: result
         with:
           script: |-
-            const first = JSON.parse("${{ steps.simulate-input.outputs.result }}" || "[]")
-            const second = JSON.parse("${{ steps.simulate-fetch.outputs.result }}" || "[]")
+            const first = JSON.parse('${{ steps.simulate-input.outputs.result }}' || '[]')
+            const second = JSON.parse('${{ steps.simulate-fetch.outputs.result }}' || '[]')
             
             const merged = [...first, ...second]
             
