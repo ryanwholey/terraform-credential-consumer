@@ -23,7 +23,7 @@ jobs:
         id: result
         with:
           script: |-
-            const first = "${{ steps.simulate-input.outputs.input }}[0]"
+            const first = ${{ steps.simulate-input.outputs.input }}
             console.log(first)
             
             // const first = ${{ steps.simulate-input.outputs.input }}[0]
