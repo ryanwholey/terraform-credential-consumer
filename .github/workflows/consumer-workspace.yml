@@ -40,27 +40,27 @@ jobs:
           address: https://app.terraform.io
           token: ${{ secrets.terraform_token }}
           target: variables
-      # - if: ${{ inputs.add_organization_variables }}
-      #   name: Merge variables
-      #   id: variables
-      #   uses: ryanwholey/merge-json-array-action@main
-      #   with:
-      #     first: "${{ steps.provider.outputs.output }}"
-      #     second: "${{ inputs.variables }}"
-      #     sensitive: true
-      - uses: actions/github-script@v5
+      - if: ${{ inputs.add_organization_variables }}
+        name: Merge variables
         id: variables
+        uses: ryanwholey/merge-json-array-action@main
         with:
-          script: |-
-            const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
-            const inputVars = JSON.parse('${{ inputs.variables }}')
+          first: "${{ steps.provider.outputs.output }}"
+          second: "${{ inputs.variables }}"
+          sensitive: true
+      # - uses: actions/github-script@v5
+      #   id: variables
+      #   with:
+      #     script: |-
+      #       const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
+      #       const inputVars = JSON.parse('${{ inputs.variables }}')
             
-            const merged = JSON.stringify([...orgVars, ...inputVars])
+      #       const merged = JSON.stringify([...orgVars, ...inputVars])
 
-            core.setSecret(merged)
+      #       core.setSecret(merged)
 
-            return merged
-          result-encoding: string      
+      #       return merged
+      #     result-encoding: string      
       - uses: actions/github-script@v5
         id: tags
         with:
