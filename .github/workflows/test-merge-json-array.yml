@@ -21,7 +21,7 @@ jobs:
         with:
           script: |-
             return [
-              ...${{ steps.simulate-fetch.outputs.fetched }}
+              ...${{ steps.simulate-fetch.outputs.fetched }},
               ...${{ steps.simulate-input.outputs.input }},
             ]
           result-encoding: string
