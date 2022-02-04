@@ -1,0 +1,28 @@
+name: Terraform Cloud Workspace
+on:
+  pull_request:
+    paths:
+      - .github/workflows/test-merge-json-array.yml
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/test-merge-json-array.yml
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - id: simulate-fetch
+        run: echo '::set-output name=fetched::["foo", "bar"]'
+      - id: simulate-input
+        run: echo '::set-output name=input::["baz", "woz"]'        
+      - uses: actions/github-script@v5
+        id: result
+        with:
+          script: |-
+            return [
+              ...${{ steps.simulate-input.outputs.input }},
+              ...${{ steps.simulate-output.outputs.fetched }}
+            ]
+          result-encoding: string
+      - run: echo ${{ steps.result.outputs.result }}
