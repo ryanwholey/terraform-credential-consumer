@@ -48,19 +48,19 @@ jobs:
           first: "${{ steps.provider.outputs.output }}"
           second: "${{ inputs.variables }}"
           sensitive: true
-      # - uses: actions/github-script@v5
-      #   id: variables
-      #   with:
-      #     script: |-
-      #       const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
-      #       const inputVars = JSON.parse('${{ inputs.variables }}')
+      - uses: actions/github-script@v5
+        id: variables
+        with:
+          script: |-
+            const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
+            // const inputVars = JSON.parse('${{ inputs.variables }}')
             
-      #       const merged = JSON.stringify([...orgVars, ...inputVars])
+            // const merged = JSON.stringify([...orgVars, ...inputVars])
 
-      #       core.setSecret(merged)
+            // core.setSecret(merged)
 
-      #       return merged
-      #     result-encoding: string      
+            // return merged
+          result-encoding: string      
       - uses: actions/github-script@v5
         id: tags
         with:
