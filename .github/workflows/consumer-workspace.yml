@@ -74,7 +74,7 @@ jobs:
         id: terraform
         with:
           variables: |-
-            ${{ inputs.add_organization_variables && steps.script-variables.outputs.result || inputs.variables }}
+            ${{ steps.script-variables.outputs.result }}
           terraform_version: ${{ inputs.terraform_version }}
           terraform_token: "${{ secrets.terraform_token }}"
           terraform_organization: ryanwholey
