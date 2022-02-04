@@ -54,13 +54,15 @@ jobs:
         with:
           script: |-
             const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
-            // const inputVars = JSON.parse('${{ inputs.variables }}')
+            /*
+            const inputVars = JSON.parse('${{ inputs.variables }}')
             
-            // const merged = JSON.stringify([...orgVars, ...inputVars])
+            const merged = JSON.stringify([...orgVars, ...inputVars])
 
-            // core.setSecret(merged)
+            core.setSecret(merged)
 
-            // return merged
+            return merged
+            */
           result-encoding: string      
       - name: Merge Workspace Tags
         uses: actions/github-script@v5
