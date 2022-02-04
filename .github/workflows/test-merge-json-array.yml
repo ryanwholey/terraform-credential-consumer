@@ -1,4 +1,4 @@
-name: Terraform Cloud Workspace
+name: Test github-script Action
 on:
   pull_request:
     paths:
@@ -23,9 +23,11 @@ jobs:
         id: result
         with:
           script: |-
-            if ("${{ steps.simulate-input.outputs.input }}"[0] === '*') {
+            if (${{ steps.simulate-input.outputs.input }}[0] === '*') {
               console.log('masked in template')
+            } else {
+              console.log('no')
             }
-            
+
             return []
       - run: echo ${{ steps.result.outputs.result }}
