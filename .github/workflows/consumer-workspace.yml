@@ -57,8 +57,7 @@ jobs:
             core.setSecret(merged)
 
             return merged
-          result-encoding: string      
-          debug: true
+          result-encoding: string
       - name: Merge Workspace Tags
         uses: actions/github-script@v5
         id: tags
