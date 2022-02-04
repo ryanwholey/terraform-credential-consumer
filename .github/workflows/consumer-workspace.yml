@@ -54,8 +54,8 @@ jobs:
         with:
           script: |-
             const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
-            /*
             const inputVars = JSON.parse('${{ inputs.variables }}')
+            /*
             
             const merged = JSON.stringify([...orgVars, ...inputVars])
 
