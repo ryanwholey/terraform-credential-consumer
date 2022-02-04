@@ -24,5 +24,4 @@ jobs:
               ...${{ steps.simulate-fetch.outputs.fetched }},
               ...${{ steps.simulate-input.outputs.input }},
             ]
-          result-encoding: string
       - run: echo ${{ steps.result.outputs.result }}
