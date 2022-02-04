@@ -23,5 +23,5 @@ jobs:
             const fetched = JSON.parse('${{ steps.simulate-fetch.outputs.fetched }}' || '[]')
             const inputs = JSON.parse('${{ steps.simulate-input.outputs.input }}' || '[]')
 
-            return [...fetched, ..inputs]
+            return [...fetched, ...inputs]
       - run: echo ${{ steps.result.outputs.result }}
