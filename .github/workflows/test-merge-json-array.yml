@@ -14,14 +14,13 @@ jobs:
     steps:
       - id: simulate-fetch
         run: echo '::set-output name=fetched::["foo", "bar"]'
-      - id: simulate-input
-        run: echo '::set-output name=input::["baz", "woz"]'        
+      # - id: simulate-input
+      #   run: echo '::set-output name=input::["baz", "woz"]'        
       - uses: actions/github-script@v5
         id: result
         with:
           script: |-
-            return [
-              ...${{ steps.simulate-fetch.outputs.fetched }},
-              ...${{ steps.simulate-input.outputs.input }},
-            ]
+            const fetched = ${{ steps.simulate-fetch.outputs.fetched }} || []
+            const inputs = ${{ steps.simulate-input.outputs.input }} || []
+            return [...fetched, ..inputs]
       - run: echo ${{ steps.result.outputs.result }}
