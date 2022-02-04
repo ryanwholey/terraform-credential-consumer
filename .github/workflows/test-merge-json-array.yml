@@ -13,26 +13,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: simulate-fetch
-        run: echo '::set-output name=fetched::["foo", "bar"]'
+        run: echo '::set-output name=result::["foo", "bar"]'
       - id: simulate-input
         run: |-
           str='["baz","woz"]'
           echo "::add-mask::$str"
-          echo "::set-output name=input::$str"
+          echo "::set-output name=result::$str"
       - uses: actions/github-script@v5
         id: result
         with:
           script: |-
-            const first = ${{ steps.simulate-input.outputs.input }}
-            console.log(first)
+            const first = JSON.parse("${{ steps.simulate-input.outputs.result }}" || "[])
+            const second = JSON.parse("${{ steps.simulate-fetch.outputs.result }}" || "[])
             
-            // const first = ${{ steps.simulate-input.outputs.input }}[0]
-
-            // if (${{ steps.simulate-input.outputs.input }}[0] === '*') {
-            //   console.log('masked in template')
-            // } else {
-            //   console.log('no')
-            // }
-
-            return []
+            const merged = [...first, ...second]
+            
+            return JSON.stringify(merged)
+          result-encoding: string
       - run: echo ${{ steps.result.outputs.result }}
