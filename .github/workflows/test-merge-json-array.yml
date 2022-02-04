@@ -16,13 +16,11 @@ jobs:
         run: echo '::set-output name=fetched::["foo", "bar"]'
       - id: simulate-input
         run: echo '::set-output name=input::["baz", "woz"]'        
+      - run: echo "return [...${{ steps.simulate-input.outputs.input }},...${{ steps.simulate-output.outputs.fetched }}]"
       - uses: actions/github-script@v5
         id: result
         with:
           script: |-
-            return [
-              ...${{ steps.simulate-input.outputs.input }},
-              ...${{ steps.simulate-output.outputs.fetched }}
-            ]
+            return [...${{ steps.simulate-input.outputs.input }},...${{ steps.simulate-output.outputs.fetched }}]
           result-encoding: string
       - run: echo ${{ steps.result.outputs.result }}
