@@ -53,16 +53,14 @@ jobs:
         id: script-variables
         with:
           script: |-
-            const orgVars = JSON.parse('${{ steps.provider.outputs.output }}')
-            const inputVars = JSON.parse('${{ inputs.variables }}')
-            /*
+            const orgVars = JSON.parse(`\${{ steps.provider.outputs.output }}`)
+            const inputVars = JSON.parse(`\${{ inputs.variables }}`)
             
             const merged = JSON.stringify([...orgVars, ...inputVars])
 
             core.setSecret(merged)
 
             return merged
-            */
           result-encoding: string      
       - name: Merge Workspace Tags
         uses: actions/github-script@v5
@@ -70,7 +68,7 @@ jobs:
         with:
           script: |-
             if (${{ inputs.add_organization_variables }}) {
-              return JSON.stringify(['add-provider-config', ...JSON.parse('${{ inputs.tags }}')])
+              return JSON.stringify(['add-provider-config', ...JSON.parse(`\${{ inputs.tags }}`)])
             }
 
             return ${{ inputs.tags }}
