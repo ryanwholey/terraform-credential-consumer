@@ -33,5 +33,6 @@ jobs:
           "sensitive": false,
           "description": "just your friendly neighborhood foo"
         }]
+      tags: '["tag"]'
     secrets:
       terraform_token: ${{ secrets.TF_TOKEN }}
