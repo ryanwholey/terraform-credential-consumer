@@ -17,8 +17,6 @@ on:
 jobs:
   workspace:
     runs-on: ubuntu-latest
-    outputs:
-      variables: ${{ steps.provider.outputs.output }}
     steps:
       - name: Fetch Workspace Variables
         uses: ryanwholey/terraform-cloud-remote-state-action@main
