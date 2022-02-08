@@ -28,7 +28,7 @@ jobs:
           aws-region: us-west-2
       - name: Read S3 bucket
         run: |
-          aws s3 ls s3://ryanwholey-test-terraform-state
+          aws s3api get-object --bucket ryanwholey-test-terraform-state --key object foo | cat
     # workspace:
   #   uses: ryanwholey/terraform-credential-provider/.github/workflows/consumer-workspace.yml@main
   #   with:
