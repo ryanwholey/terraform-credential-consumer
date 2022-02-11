@@ -10,10 +10,6 @@ name: Default branch role
 on:
   pull_request:
   push:
-    branches-ignore:
-      - '**'
-    tags:
-      - '*'
 permissions:
   id-token: write
 jobs:

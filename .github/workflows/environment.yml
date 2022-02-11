@@ -16,11 +16,12 @@ permissions:
 jobs:
   credentials:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::695834901730:role/gha-test-tag
+          role-to-assume: arn:aws:iam::695834901730:role/gha-test-environment
           aws-region: us-west-2
       - name: Read S3 bucket
         run: |

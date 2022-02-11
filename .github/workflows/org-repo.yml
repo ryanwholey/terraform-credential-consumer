@@ -10,10 +10,6 @@ name: org/specific Repo Role
 on:
   pull_request:
   push:
-    branches-ignore:
-      - '**'
-    tags:
-      - '*'
 permissions:
   id-token: write
 jobs:
