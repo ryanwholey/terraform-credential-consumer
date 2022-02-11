@@ -10,9 +10,9 @@ name: Tag role
 on:
   pull_request:
   push:
-    branches:    
-      - main
-    tags:        
+    branches-ignore:
+      - '**'
+    tags:
       - '*'
 permissions:
   id-token: write
