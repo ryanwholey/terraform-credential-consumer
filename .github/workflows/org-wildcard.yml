@@ -6,7 +6,7 @@
 # arn:aws:iam::695834901730:role/gha-test-pull_request
 # arn:aws:iam::695834901730:role/gha-test-tag
 # ]
-name: org/* Role
+name: org-wildcard.yml
 on:
   pull_request:
   push:
@@ -15,6 +15,7 @@ permissions:
 jobs:
   credentials:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1

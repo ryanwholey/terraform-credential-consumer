@@ -7,7 +7,7 @@
 # arn:aws:iam::695834901730:role/gha-test-pull_request
 # arn:aws:iam::695834901730:role/gha-test-tag
 # ]
-name: Environment role
+name: environment.yml
 on:
   pull_request:
   push:
