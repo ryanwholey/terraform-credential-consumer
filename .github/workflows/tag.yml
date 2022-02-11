@@ -16,7 +16,7 @@ permissions:
 jobs:
   credentials:
     runs-on: ubuntu-latest
-    environment: production
+    environment: not-production
     steps:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
