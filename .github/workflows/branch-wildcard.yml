@@ -10,6 +10,10 @@ name: Any branch role
 on:
   pull_request:
   push:
+    branches:    
+      - main
+    tags:        
+      - '*'
 permissions:
   id-token: write
 jobs:
