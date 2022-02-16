@@ -32,4 +32,4 @@ jobs:
         with:
           backend_type: remote
           workspace: default
-          backend_confi: ${{github.workspace}}/terraform-backend-config.hcl.json
+          backend_config: ${{github.workspace}}/terraform-backend-config.hcl.json
