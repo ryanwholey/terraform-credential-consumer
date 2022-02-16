@@ -9,7 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Check terraform file are formatted correctly
     steps:
-      - uses: DamianReeves/write-file-action
+      - name: Write backend config file
+        uses: DamianReeves/write-file-action@master
         with:
           path: ${{ env.home}}/terraform-backend-config
           contents: |
