@@ -12,7 +12,7 @@ jobs:
       - name: Write backend config file
         uses: DamianReeves/write-file-action@master
         with:
-          path: ${{github.workspace}}/terraform-backend-config.hcl
+          path: ${{github.workspace}}/manager.tfbackend
           contents: |
             workspaces { name = "terraform-workspace-manager" }
             hostname     = "app.terraform.io"
@@ -26,8 +26,5 @@ jobs:
         with:
           backend_type: remote
           workspace: default
-          backend_config: |-
-            workspaces { name = "terraform-workspace-manager" }
-            hostname     = "app.terraform.io"
-            organization = "ryanwholey"
+          backend_config: ${{github.workspace}}/manager.tfbackend
       - run: echo ${{ steps.manager.outputs.storage_bucket }}
