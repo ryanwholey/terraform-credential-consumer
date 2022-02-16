@@ -20,10 +20,11 @@ jobs:
           write-mode: overwrite
       - name: Get remote state
         uses: dflook/terraform-remote-state@v1
-        id: remote-state
+        id: manager
         env:
           TERRAFORM_CLOUD_TOKENS: app.terraform.io=${{ secrets.TF_TOKEN }}
         with:
           backend_type: remote
           workspace: default
           backend_config: ${{github.workspace}}/terraform-backend-config.hcl
+      - run: echo ${{ steps.manager.outputs.storage_bucket }}
