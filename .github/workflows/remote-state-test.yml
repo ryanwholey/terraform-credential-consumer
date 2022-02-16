@@ -12,17 +12,11 @@ jobs:
       - name: Write backend config file
         uses: DamianReeves/write-file-action@master
         with:
-          path: ${{github.workspace}}/terraform-backend-config.hcl.json
+          path: ${{github.workspace}}/terraform-backend-config.hcl
           contents: |
-            {
-              "workspaces": [
-                {
-                  "name": "terraform-workspace-manager"
-                }
-              ],
-              "hostname": "app.terraform.io",
-              "organization": "ryanwholey"
-            }
+            workspaces { name = "terraform-workspace-manager" }
+            hostname     = "app.terraform.io"
+            organization = "ryanwholey"
           write-mode: overwrite
       - name: Get remote state
         uses: dflook/terraform-remote-state@v1
@@ -32,4 +26,4 @@ jobs:
         with:
           backend_type: remote
           workspace: default
-          backend_config: ${{github.workspace}}/terraform-backend-config.hcl.json
+          backend_config: ${{github.workspace}}/terraform-backend-config.hcl
