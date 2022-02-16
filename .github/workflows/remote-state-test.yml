@@ -9,15 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     name: Test fetch remote state
     steps:
-      - name: Write backend config file
-        uses: DamianReeves/write-file-action@master
-        with:
-          path: ${{github.workspace}}/manager.tfbackend
-          contents: |
+      - name: Write manager backend
+        id: manager-backend
+        run: |-
+          file="${{github.workspace}}/manager.tfbackend"
+          tee "$file" << EOF
             workspaces { name = "terraform-workspace-manager" }
             hostname     = "app.terraform.io"
             organization = "ryanwholey"
-          write-mode: overwrite
+          EOF
+          echo "::set-output name=file::$file"
       - name: Get remote state
         uses: dflook/terraform-remote-state@v1
         id: manager
@@ -25,6 +26,5 @@ jobs:
           TERRAFORM_CLOUD_TOKENS: app.terraform.io=${{ secrets.TF_TOKEN }}
         with:
           backend_type: remote
-          workspace: default
-          backend_config: ${{github.workspace}}/manager.tfbackend
+          backend_config: ${{ steps.manager-backend.outputs.file }}
       - run: echo ${{ steps.manager.outputs.storage_bucket }}
