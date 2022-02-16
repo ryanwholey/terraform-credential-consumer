@@ -9,6 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     name: Check terraform file are formatted correctly
     steps:
+      - uses: DamianReeves/write-file-action
+        with:
+          path: ${{ env.home}}/terraform-backend-config
+          contents: |
+            hostname     = "app.terraform.io
+            organization = "ryanwholey"
+
+            workspaces = {
+              name = "terraform-workspace-manager"
+            }
+          write-mode: overwrite
       - name: Get remote state
         uses: dflook/terraform-remote-state@v1
         id: remote-state
@@ -17,11 +28,4 @@ jobs:
         with:
           backend_type: remote
           workspace: default
-          backend_config: |-
-            {
-              "hostname": "app.terraform.io",
-              "organization": "ryanwholey",
-              workspaces: {
-                "name": "terraform-workspace-manager"
-              }
-            }
+          backend_config_file: ${{ env.home}}/terraform-backend-config
