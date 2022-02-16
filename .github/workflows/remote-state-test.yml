@@ -1,0 +1,27 @@
+name: Send request
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  get_remote_state:
+    runs-on: ubuntu-latest
+    name: Check terraform file are formatted correctly
+    steps:
+      - name: Get remote state
+        uses: dflook/terraform-remote-state@v1
+        id: remote-state
+        env:
+          TERRAFORM_CLOUD_TOKENS: app.terraform.io=${{ secrets.TF_TOKEN }}
+        with:
+          backend_type: remote
+          workspace: default
+          backend_config: |-
+            {
+              "hostname": "app.terraform.io",
+              "organization": "ryanwholey",
+              workspaces: {
+                "name": "terraform-workspace-manager"
+              }
+            }
