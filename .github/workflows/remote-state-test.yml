@@ -7,7 +7,7 @@ on:
 jobs:
   get_remote_state:
     runs-on: ubuntu-latest
-    name: Check terraform file are formatted correctly
+    name: Test fetch remote state
     steps:
       - name: Write backend config file
         uses: DamianReeves/write-file-action@master
@@ -26,5 +26,8 @@ jobs:
         with:
           backend_type: remote
           workspace: default
-          backend_config: ${{github.workspace}}/terraform-backend-config.hcl
+          backend_config: |-
+            workspaces { name = "terraform-workspace-manager" }
+            hostname     = "app.terraform.io"
+            organization = "ryanwholey"
       - run: echo ${{ steps.manager.outputs.storage_bucket }}
