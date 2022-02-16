@@ -12,7 +12,7 @@ jobs:
       - name: Write backend config file
         uses: DamianReeves/write-file-action@master
         with:
-          path: ${{ env.home}}/terraform-backend-config
+          path: ${{github.workspace}}/terraform-backend-config
           contents: |
             hostname     = "app.terraform.io
             organization = "ryanwholey"
@@ -29,4 +29,4 @@ jobs:
         with:
           backend_type: remote
           workspace: default
-          backend_config_file: ${{ env.home}}/terraform-backend-config
+          backend_config_file: ${{github.workspace}}/terraform-backend-config
