@@ -9,7 +9,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event.inputs.tags }}
+      - name: Set output
+        id: vars
+        run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+      - name: Check output
+        run: |
+          echo ${{ steps.vars.outputs.tag }}
       # - name: Setup Go
       #   uses: actions/setup-go@v2
       #   with:
